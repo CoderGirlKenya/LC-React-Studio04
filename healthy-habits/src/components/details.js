@@ -1,37 +1,49 @@
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import uuid from "react-uuid"; // Universally Unique ID generator
 import "../App.css";
+//import "../App.js";
+import { waitForElement } from "@testing-library/react";
 
 const Details = (props) => {
 
     // TODO: Create state variables to hold values of form input fields.
     // Initialize them as empty strings.
     // Don't forget to import the hook you need.
-
+    const [foodCalInput, setFoodCalInput] = useState('');
+    const [inputWater, setInputWater] = useState('');
+    const [foodDescInput, setFoodDescInput]=useState('');
+    const[exerciseCalInput, setExerciseCalInput] = useState('');
+    const [exerciseDescInput, setExerciseDescInput]= useState ('');
+    const [stepsInput, setStepsInput] = useState('');
 
     // TODO: Create state variables to hold full lists of food and exercise
     // Initialize them as empty arrays.
+ const [foodList, setFoodList] = useState([]); 
+ 
 
+ const [exerciseList, setExerciseList] = useState([]);
 
     // Steps input handler (note e = event)
-    const handleStepsChange = e => {
+   const handleStepsChange = e => {
         e.preventDefault();
-        let amount = Number(e.target.value);
+       let amount = Number(e.target.value);
         // TODO: set the new value in state
-        
+        setStepsInput(amount);
+        //const [handleStepsChange, setHandleStepsChange]=useState(e)
+        //     event.preventDefault();
+        //     let amount = Number(event.target.value)
         // TODO: call the update handler via props and pass in the amount
-        
+        props.updateSteps(amount);
     }
-
     // Water input handler
     const handleWaterChange = e => {
         e.preventDefault();
         let amount = Number(e.target.value);
         // TODO: set the new value in state
-        
+        setInputWater(amount);
         // TODO: call the update handler via props and pass in the amount
-        
+        props.updateWater(amount);
     }
 
     // Food input handlers
@@ -39,27 +51,38 @@ const Details = (props) => {
         e.preventDefault();
         let desc = e.target.value;
         // TODO: set the new value in state
-        
+        setFoodDescInput(desc);
     }
     const handleFoodCalChange = e => {
         e.preventDefault();
         let amount = Number(e.target.value);
         // TODO: set the new value in state
-        
+        setFoodCalInput(amount);
     }
     const handleSubmitFood = e => {
         e.preventDefault();
         let newFoodEntry = {
             id: uuid(),
+            //description: '',
+            //calorie: 0,
             // TODO: Add desc & cal properties with values from state
-            
+            desc: foodDescInput,
+            cal: foodCalInput,
         }
+        //To make a copy of list held in state
+        let prevFoodList = [...foodList];
+
+        //Combine the copy of the list and the new entry and set as the new value of the list
+        setFoodList([...prevFoodList, newFoodEntry]);
+        props.updateFood(newFoodEntry.cal);
         // TODO: use prevState to add the new entry to the food list (once you've created it later)
         
         // TODO: call the update handler via props and pass in the calories
-        
+        //Details.propsTypes.updateFood(newFoodEntry.calorie);
+
         // TODO: reset the food desc and cal input values to an empty string
-        
+        setFoodDescInput("");
+        setFoodCalInput("");
     }
 
     // Exercise input handlers
@@ -67,27 +90,30 @@ const Details = (props) => {
         e.preventDefault();
         let desc = e.target.value;
         // TODO: set the new value in state
-        
+        setExerciseDescInput(desc)
     }
     const handleExerciseCalChange = e => {
         e.preventDefault();
         let amount = Number(e.target.value);
         // TODO: set the new value in state
-        
+        setExerciseCalInput(amount);
     }
     const handleSubmitExercise = e => {
         e.preventDefault();
         let newExerciseEntry = {
             id: uuid(),
             // TODO: Add desc & cal properties with values from state
-            
+            desc: exerciseDescInput,
+            cal: exerciseCalInput,
         }
         // TODO: use prevState to add the new entry to the exercise list (once you've created it later)
-        
+        let prevExerciseList = [...exerciseList];
+        setExerciseList([...prevExerciseList, newExerciseEntry]);
         // TODO: call the update handler via props and pass in the calories from newExerciseEntry
-        
+        props.updateExercise(newExerciseEntry.cal);
         // TODO: reset the exercise desc and cal input values to an empty string
-        
+        setExerciseDescInput("");
+        setExerciseCalInput("");
     }
 
     // Small helper components like this don't need a separate file
@@ -130,7 +156,7 @@ const Details = (props) => {
                 <form id="water-form" onSubmit={(e) => e.preventDefault() }>
                     <p className="label">TOTAL GLASSES OF WATER</p>
                     {/* TODO: Add two-way binding for the input below */}
-                    <input type="number" placeholder="Total" min="0" />           
+                <input  type="number" placeholder="Total" min="0" onChange={handleWaterChange} value={inputWater}/>           
                 </form>
                 <p className="list subheader">How much water should you drink each day?</p>
                 <p className="info">In general, you should drink between &frac12; - 1 ounce for every pound you weigh. That's 5-10 glasses per day for a 160-lb person.</p>
@@ -140,7 +166,8 @@ const Details = (props) => {
                 <form id="steps-form" onSubmit={(e) => e.preventDefault() }>
                     <p className="label">TOTAL STEPS</p>
                     {/* TODO: Add two-way binding for the input below */}
-                    <input type="number" placeholder="Total" min="0" />
+                    <input onChange= {handleStepsChange}
+                    value = {stepsInput} type="number" placeholder="Total" min="0" value={stepsInput} />
                 </form>
                 <p className="subheader steps-subheader">What's your daily steps goal?</p>
                 <table className="steps-table">
@@ -169,34 +196,35 @@ const Details = (props) => {
                 <form id="food-form">
                     <p className="label">ADD CALORIES CONSUMED</p>
                     {/* TODO: Add two-way binding for each of the two inputs below */}
-                    <input type="text" className="wide" placeholder="Description of food or beverage" maxLength="32" />
-                    <input type="number" placeholder="Calories" min="0" />
+                    <input  type="text" className="wide" placeholder="Description of food or beverage" maxLength="32" onClick={handleFoodDescChange} value={foodCalInput}/>
+                    <input  type="number" placeholder="Calories" min="0" value={foodDescInput} onChange={handleFoodDescChange} maxlength="32"/>
                     {/* TODO: BONUS! Make the button disabled if either field is empty */}
-                    <button type="submit" onClick={handleSubmitFood}>Add</button>
+                    <button type="submit" onClick={handleSubmitFood} disabled={foodDescInput=== "" ||foodCalInput === ""}>Add</button>
                 </form>
                 {/* TODO: BONUS! Make the log & table appear only when the first entry is submitted */}
-                <div>
+                {foodList.length > 0 && <div>
                     <p className="details-header">FOOD & BEVERAGE LOG</p>
                     {/* TODO: Add the DetailsTable component and pass in the food list using the attribute 'list' */}
-                    
-                </div>
+                   <DetailsTable list={foodList}/>
+                </div>}
             </div>}
 
             {props.type === "exercise" && <div>
                 <form id="exercise-form">
                     <p className="label">ADD CALORIES BURNED</p>
                     {/* TODO: Add two-way binding for each of the two inputs below */}
-                    <input type="text" className="wide" placeholder="Description of exercise activity" maxLength="32" />
-                    <input type="number" placeholder="Calories" min="0" />
+                    <input value = {exerciseDescInput} onChange = {handleExerciseDescChange} value="setExercise" type="text" className="wide" placeholder="Description of exercise activity" maxLength="32" />
+                    <input value="setNet" type="number" placeholder="Calories" min="0" onChange={handleExerciseCalChange}/>
                     {/* TODO: BONUS! Make the button disabled if either field is empty */}
-                    <button type="submit" onClick={handleSubmitExercise}>Update</button>
+                    <button type="submit" onClick={handleSubmitExercise} disabled={exerciseDescInput=== ""||exerciseCalInput === "" }>Update</button>
                 </form>
                 {/* TODO: BONUS! Make the log & table appear only when the first entry is submitted */}
-                <div>
+                {exerciseList.length > 0 && <div>
                     <p className="details-header">EXERCISE LOG</p>
                     {/* TODO: Add the DetailsTable component and pass in the exercise list using the attribute 'list' */}
+                    <DetailsTable list = {exerciseList}/>
                     
-                </div>
+                </div>}
             </div>}
 
         </div>
