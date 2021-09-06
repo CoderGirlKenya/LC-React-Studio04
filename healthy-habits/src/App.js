@@ -22,6 +22,7 @@ function App() {
 
     // TODO: Inside each of the following handlers, update the corresponding numbers property from state.
     const handleUpdateSteps = (amount) => {
+<<<<<<< HEAD
         // You can use your setter to update the state variable directly with the new amount.
         setNumbers(prevState =>{
             return {
@@ -38,6 +39,14 @@ function App() {
                 water: amount,
             }
         });
+=======
+        // Use prevState to change just the steps property within the numbers object.
+        
+    };
+    const handleUpdateWater = (amount) => {
+        // Use prevState to change just the water property within the numbers object.
+
+>>>>>>> 1117e10b8a4184365980b726395f02930b67ca0e
     };
     const handleUpdateFood = (amount) => {
         // You'll need to update both the food calories and the net calories here (add calories consumed). Use prevState to ensure you are adding the new amount to the existing total.
@@ -51,6 +60,7 @@ function App() {
         setNumbers.net();
     };
     const handleUpdateExercise = (amount) => {
+<<<<<<< HEAD
         // You'll need to update both the food calories and the net calories here (subtract calories burned). Use prevState to ensure you are adding the new amount to the existing total. 
             setNumbers(prevState=> {
                 return {
@@ -59,12 +69,20 @@ function App() {
                     net: prevState.net - amount,
                 }
             })
+=======
+        // You'll need to update both the exercise calories and the net calories here (subtract calories burned). Use prevState to ensure you are adding the new amount to the existing total. 
+
+>>>>>>> 1117e10b8a4184365980b726395f02930b67ca0e
     };
 
     // TODO: Change the current type of details to be displayed.
     const handleCurrTypeChange = (type) => {
+<<<<<<< HEAD
         // Use the setter from state.
         setCurrType(type);
+=======
+        // Use the setter you created with your state variable.
+>>>>>>> 1117e10b8a4184365980b726395f02930b67ca0e
         
     };
 
@@ -117,6 +135,7 @@ function App() {
             </div>
             
             {/* TODO: Pass the current type into the Details component */}
+<<<<<<< HEAD
             {/* TODO: Pass the four update handler functions to the Details component below. Check the propTypes object at the bottom of Details.js to get the prop names, then look just below the state variables in this file to get the names of the handler functions. */}
             <Details 
             type = {currType} 
@@ -125,6 +144,10 @@ function App() {
             updateFood = {handleUpdateFood} 
             updateExercise = {handleUpdateExercise}    
             />
+=======
+            {/* TODO: Pass the four handler functions to the Details component below. Check the propTypes object at the bottom of Details.js to see what the names of the attributes should be, then look just below the state variables at the top of this file for the names of the functions you are passing down. */}
+            <Details />
+>>>>>>> 1117e10b8a4184365980b726395f02930b67ca0e
             
         </div>
     );

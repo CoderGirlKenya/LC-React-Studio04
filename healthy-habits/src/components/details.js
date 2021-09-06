@@ -63,11 +63,16 @@ const Details = (props) => {
         e.preventDefault();
         let newFoodEntry = {
             id: uuid(),
+<<<<<<< HEAD
             //description: '',
             //calorie: 0,
             // TODO: Add desc & cal properties with values from state
             desc: foodDescInput,
             cal: foodCalInput,
+=======
+            // TODO: Add desc & cal properties using values from state
+            
+>>>>>>> 1117e10b8a4184365980b726395f02930b67ca0e
         }
         //To make a copy of list held in state
         let prevFoodList = [...foodList];
@@ -102,9 +107,14 @@ const Details = (props) => {
         e.preventDefault();
         let newExerciseEntry = {
             id: uuid(),
+<<<<<<< HEAD
             // TODO: Add desc & cal properties with values from state
             desc: exerciseDescInput,
             cal: exerciseCalInput,
+=======
+            // TODO: Add desc & cal properties using values from state
+            
+>>>>>>> 1117e10b8a4184365980b726395f02930b67ca0e
         }
         // TODO: use prevState to add the new entry to the exercise list (once you've created it later)
         let prevExerciseList = [...exerciseList];
